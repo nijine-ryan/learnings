@@ -1,0 +1,133 @@
+--------------------------------------------------------------------------------------------Modal implementation--------------------------------------------------------------------------------------------
+
+
+
+	Hint :*Each and every problems has solution in it
+	
+	code : 	import React, { useEffect } from "react";
+
+		// Modal wrapper to toggle it when a click happens outside of it
+		export default function Modal({ children, setToggled }) {
+		const stopPropagation= (event) => {
+		    event.stopPropagation();
+		}
+		  useEffect(() => {
+		    const handleClick = () => {
+			setToggled(false)
+		    };
+		    // Add event listener when the component mounts
+		    document.addEventListener("click", handleClick);
+		    // Remove event listener when the component unmounts
+		    return () => {
+		      document.removeEventListener("click", handleClick);
+		    };
+		  }, []);
+		// Stop the event from get bubble to document this to prevent 
+		// the modal from closing when click on it 
+		  return <div onClick={stopPropagation}>{children}</div>;
+		}
+
+--------------------------------------------------------------------------------------------Modal implementation--------------------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------------------Route implementation--------------------------------------------------------------------------------------------
+	// Dynamically render two set of routes based on user loggin state 
+	code :
+	
+	import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+	import { useSelector } from "react-redux";
+	import MerchantRoutes from "./routes/MerchantRoutes";
+	import LandingRoutes from "./routes/LandingRoutes";
+	import { useEffect } from "react";
+
+	export default function Router() {
+	    const { loginState } = useSelector((state) => state.user);
+
+	    return (
+		<BrowserRouter basename="/react">
+		    <Routes>
+		        <Route path="/*" element={loginState ? <MerchantRoutes /> : <LandingRoutes />} />
+		    </Routes>
+		</BrowserRouter>
+	    );
+	}
+
+	import { Route, Routes, useNavigate, useLocation, Navigate } from "react-router-dom";
+	import Transaction from "../pages/transaction/Transaction";
+	import Settlement from "../pages/settlement/Settlement";
+	import Refund from "../pages/refund/Refund";
+	import MerchantLayout from "../layouts/merchant/MerchantLayout";
+	import Dashboard from "../pages/merchant/Dashboard";
+	import { useEffect } from "react";
+	import { useDispatch } from "react-redux";
+	import { setUserState } from "../redux/slice/userSlice";
+	import { isUserPersist } from "../util/CommonHelper";
+	const MerchantRoutes = () => {
+	    console.log("MerchantRoutes");
+	    const location = useLocation();
+	    const dispatch = useDispatch();
+
+	    useEffect(() => {
+		dispatch(
+		    setUserState({
+		        loginState: isUserPersist(),
+		    })
+		);
+	    }, [location]);
+
+	    return (
+		<Routes>
+		    <Route exact path="/" element={<MerchantLayout />}>
+		        <Route index element={<Dashboard />} />
+
+		        <Route exact path="/transactions" element={<Transaction />} />
+
+		        <Route exact path="/settlements" element={<Settlement />} />
+
+		        <Route exact path="/refunds" element={<Refund />} />
+		    </Route>
+		    <Route exact path="*" element={<Navigate to={"/"} />} />
+		</Routes>
+	    );
+	};
+
+	export default MerchantRoutes;
+	
+	import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import LandingLayout from "../layouts/landing/LandingLayout";
+import Landing from "../pages/landing/LandingMain";
+import Login from "../pages/auth/Login";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setUserState } from "../redux/slice/userSlice";
+import { isUserPersist } from "../util/CommonHelper";
+
+const LandingRoutes = () => {
+    const location = useLocation();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(
+            setUserState({
+                loginState: isUserPersist(),
+            })
+        );
+    }, [location]);
+
+    return (
+        <Routes>
+            <Route exact path="/" element={<LandingLayout />}>
+                <Route index element={<Landing />} />
+            </Route>
+            <Route path="/login" element={<Login />} />;
+            <Route path="*" element={<Navigate to={"/"} replace={true} />} />;
+        </Routes>
+    );
+};
+
+export default LandingRoutes;
+
+
+--------------------------------------------------------------------------------------------Route implementation--------------------------------------------------------------------------------------------
+
+

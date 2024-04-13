@@ -1,0 +1,19 @@
+1.Install husky and setup 
+
+  1.1 npx husky-init && npm install       # npm
+  
+  
+2.Install and configure prettier to work correctly with eslint
+
+  2.1 npm install --save-dev --save-exact prettier
+  
+  2.2 npm install --save-dev eslint-config-prettier
+  
+  2.3 Add the prettier in the extends array in eslintrc.cjs 
+  
+  	  extends: [
+		    'eslint:recommended',
+		    'plugin:@typescript-eslint/recommended',
+		    'plugin:react-hooks/recommended',
+		    "prettier"
+			  ],

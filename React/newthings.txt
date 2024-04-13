@@ -1,0 +1,5 @@
+1.Why this become "undefined" inside a functional component ?
+	
+	Reference :-
+	
+	*https://stackoverflow.com/questions/65974199/why-react-function-components-this-is-undefined

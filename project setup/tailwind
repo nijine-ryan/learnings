@@ -1,0 +1,21 @@
+1 . Intallation
+
+	1.1 npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+	
+	1.2npx tailwindcss init -p
+	
+	1.3 /** @type {import('tailwindcss').Config} */
+	
+		export default {
+  			content: [
+  				  "./index.html",
+    				  "./src/**/*.{js,ts,jsx,tsx}",
+  			  ],
+  			  
+			  theme: {
+			    extend: {},
+			  },
+			  
+			  plugins: [],
+			}
+
